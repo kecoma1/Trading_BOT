@@ -1,12 +1,13 @@
 import threading
 import MetaTrader5 as mt5
+import tick_reader
 
 class Bot:
     
     # Attributes
     threads = []
     ticks = []
-    pill2kill = threading.Event
+    pill2kill = threading.Event()
     
     trading_data = {
         "lotage": 0.0,
@@ -40,13 +41,21 @@ class Bot:
         self.trading_data['market'] = market
         self.trading_data['avg_spread'] = 0
     
+    def get_ticks(self) -> list:
+        """Method to get the ticks.
+
+        Returns:
+            list: List of ticks
+        """
+        return self.ticks
+    
     def thread_tick_reader(self):
         """Function to launch the tick reader thread.
         """
-        t = threading.Thread(target=it.threadMinutos, 
+        t = threading.Thread(target=tick_reader.thread_tick_reader, 
                              args=(self.pill2kill, self.ticks, self.trading_data,))
         self.threads.append(t)
-        print('[WORKING] Thread - tick reader')
+        print('Thread - tick reader. LAUNCHED')
         t.start()
 
     def mt5_login(self, usr: int, password: str) -> bool:
@@ -72,3 +81,20 @@ class Bot:
             print("failed to connect at account #{}, error code: {}".format(usr, mt5.last_error()))
             return False
         return True
+    
+    def kill_threads(self):
+        """Function to kill all the loaded threads.
+        """
+        print('Threads - Stopping threads')
+        self.pill2kill.set()
+        for thread in self.threads:
+            thread.join()
+    
+    def wait(self):
+        """Function to make the thread wait.
+        """
+        # Input para detener a los hilos
+        print('\nPress ENTER to stop the bot\n')
+        input()
+        self.kill_threads()
+        mt5.shutdown()

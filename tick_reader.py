@@ -75,12 +75,18 @@ def thread_tick_reader(pill2kill, ticks: list, trading_data: dict):
     """
     global spread_list
 
+    print("[THREAD - tick_reader] - Working")
+
     # Filling the list with previos ticks
     load_ticks(ticks, trading_data['market'], trading_data['time_period'])    
-
+    
+    print("[THREAD - tick_reader] - Ticks loaded")
+    
     # Filling the list with actual ticks
+    print("[THREAD - tick_reader] - Taking ticks")
     i = 0
     while not pill2kill.wait(1):
+        
         # Every trading_data['time_period'] seconds we add a tick to the list
         if i % trading_data['time_period'] == 0:
             store_tick(ticks, trading_data['market'])
