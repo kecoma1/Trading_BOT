@@ -2,16 +2,49 @@ import time
 
 # Global variables
 MACDs = []
-PREV_MACD = 0.0
-PREV_SIGNAL = 0.0
-CUR_MACD = 0.0
-CUR_SIGNAL = 0.0
+PREV_MACD = None
+PREV_SIGNAL = None
+CUR_MACD = None
+CUR_SIGNAL = None
 
 PREV_EMA9 = None
 PREV_EMA12 = None
 PREV_EMA26 = None
 
 MAX_LEN = 9
+
+
+def check_buy() -> bool:
+    """Function to check if the MACD indicator
+    allows a buy operation.
+
+    Returns:
+        bool: True if it is a buy oportunity, false if not
+    """
+    if CUR_SIGNAL == None or CUR_MACD == None \
+        or PREV_SIGNAL == None or PREV_MACD == None:
+        return False
+    if PREV_SIGNAL >= PREV_MACD:
+        if CUR_SIGNAL <= CUR_MACD:
+            return True
+    return False
+
+
+def check_sell() -> bool:
+    """Function to check if the MACD indicator
+    allows a buy operation.
+
+    Returns:
+        bool: True if it is a buy oportunity, false if not
+    """
+    if CUR_SIGNAL == None or CUR_MACD == None \
+        or PREV_SIGNAL == None or PREV_MACD == None:
+        return False
+    if PREV_SIGNAL <= PREV_MACD:
+        if CUR_SIGNAL >= CUR_MACD:
+            return True
+    return False
+
 
 def K(n):
     """Function for calculating k
@@ -83,7 +116,8 @@ def EMA(ticks: list, n: int):
         PREV_EMA9 = ema 
     
     return ema
-    
+
+
 def MACD(ticks):
     """Function that computes the MACD.
 
@@ -95,6 +129,7 @@ def MACD(ticks):
     """
     return EMA(ticks[-12:], 12) - EMA(ticks[-26:], 26)
 
+
 def SIGNAL():
     """Function that computes the SIGNAL.
 
@@ -102,6 +137,7 @@ def SIGNAL():
         float: Value of the SIGNAL
     """
     return EMA(MACDs[-9:], 9)
+
 
 def thread_macd(pill2kill, ticks: list, indicators: dict):
     """Function executed by a thread that calculates
