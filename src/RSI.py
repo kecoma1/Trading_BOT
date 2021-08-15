@@ -3,6 +3,37 @@ import time
 
 # Global variables
 N_for_RSI = 14
+RSI_value = None
+
+
+def check_buy() -> bool:
+    """Function to check if the RSI allows
+    a buy operation.
+
+    Returns:
+        bool: True if RSI allows, false if not.
+    """
+    if RSI_value is None:
+        return False
+    else:
+        if RSI_value >= 65:
+            return True
+    return False    
+
+
+def check_sell() -> bool:
+    """Function to check if the RSI
+    allows a sell operation.
+
+    Returns:
+        bool: True if RSI allows, false if not.
+    """
+    if RSI_value is None:
+        return False
+    else:
+        if RSI_value <= 35:
+            return True
+    return False
 
 
 def RS(ticks: list) -> float:
@@ -55,6 +86,8 @@ def thread_RSI(pill2kill, ticks: list, indicators: dict):
         ticks (list): List with prices.
         indicators (dict): Dictionary where the values are stored.
     """
+    global RSI_value
+    
     # If the list hasn't enough values we wait.
     while len(ticks) < N_for_RSI:
         print("[THREAD - RSI] - Waiting for ticks")
@@ -63,4 +96,5 @@ def thread_RSI(pill2kill, ticks: list, indicators: dict):
     print("[THREAD - RSI] - Computing values")
     
     while not pill2kill.wait(1):
-        indicators['RSI'] = RSI(ticks[-N_for_RSI:])
+        RSI = RSI(ticks[-N_for_RSI:])
+        indicators['RSI'] = RSI
