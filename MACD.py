@@ -11,6 +11,8 @@ PREV_EMA9 = None
 PREV_EMA12 = None
 PREV_EMA26 = None
 
+MAX_LEN = 9
+
 def K(n):
     """Function for calculating k
 
@@ -48,7 +50,7 @@ def EMA(ticks: list, n: int):
     """
     global PREV_EMA12, PREV_EMA26, PREV_EMA9
     
-    if n != 12 or n != 26:
+    if n != 12 and n != 26 and n != 9:
         print("EMA function: N must be 12 or 26")
     
     # Not enough ticks in the list
@@ -101,13 +103,25 @@ def SIGNAL():
     """
     return EMA(MACDs[-9:], 9)
 
-def thread_macd(pill2kill, ticks: list):
-    global MACDs
+def thread_macd(pill2kill, ticks: list, indicators: dict):
+    """Function executed by a thread that calculates
+    the MACD and the SIGNAL.
+
+    Args:
+        pill2kill (Threading.Event): Event for stopping
+        the thread's execution.
+        ticks (list): List with prices.
+        indicators (dict): Dictionary where the data is
+        going to be stored.
+    """
+    global MACDs, CUR_SIGNAL, CUR_MACD, PREV_SIGNAL, PREV_MACD
     
     # Wait if there are not enough elements
     while len(ticks) < 35:
+        print("[THREAD - MACD] - Waiting for ticks")
         time.sleep(1.5)
     
+    print("[THREAD - MACD] - Loading values")
     # First we need to calculate the previous MACDs and SIGNALs
     i = 26
     while i < len(ticks):
@@ -123,9 +137,13 @@ def thread_macd(pill2kill, ticks: list):
             continue
         else:
             PREV_SIGNAL = CUR_SIGNAL
-            CUR_SIGNAL = SIGNAL(MACDs)
+            CUR_SIGNAL = SIGNAL()
+        
+        if len(MACDs) > 9:
+            del MACDs[0]
 
     # Main thread loop
+    print("[THREAD - MACD] - Computing values")
     while not pill2kill.wait(1):
         # Computing the MACD
         PREV_MACD = CUR_MACD
@@ -134,5 +152,11 @@ def thread_macd(pill2kill, ticks: list):
         
         # Computing the SIGNAL
         PREV_SIGNAL = CUR_SIGNAL
-        CUR_SIGNAL = SIGNAL(MACDs)
-            
+        CUR_SIGNAL = SIGNAL()
+        
+        # Updating the dictionary
+        indicators['MACD']['MACD'] = CUR_MACD
+        indicators['MACD']['SIGNAL'] = CUR_SIGNAL
+
+        if len(MACDs) > 9:
+            del MACDs[0]

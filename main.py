@@ -15,8 +15,10 @@ if not b.mt5_login(usr, password):
     quit()
 b.thread_tick_reader()
 b.thread_slope_abs_rel()
+b.thread_MACD()
 b.wait()
 
+3print(b.indicators)
 
 # Haciendo una gráfica de los datos
 lista_segundos = b.get_ticks()

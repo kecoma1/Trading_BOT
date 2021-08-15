@@ -2,6 +2,7 @@ import threading
 import MetaTrader5 as mt5
 import tick_reader
 import slope_abs_rel
+import MACD
 
 class Bot:
     
@@ -68,6 +69,13 @@ class Bot:
         self.threads.append(t)
         t.start()
         print('Thread - slope_abs_rel. LAUNCHED')
+    
+    def thread_MACD(self):
+        t = threading.Thread(target=MACD.thread_macd, 
+                             args=(self.pill2kill, self.ticks, self.indicators))
+        self.threads.append(t)
+        t.start()
+        print('Thread - MACD. LAUNCHED')
 
     def mt5_login(self, usr: int, password: str) -> bool:
         """Function to initialize the metatrader 5 aplication
