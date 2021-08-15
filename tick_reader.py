@@ -4,6 +4,7 @@ import pytz
 
 # Global variables
 MAX_TICKS_LEN = 200
+MAX_LEN_SPREAD = 20
 spread_list = []
 
 
@@ -94,7 +95,7 @@ def thread_tick_reader(pill2kill, ticks: list, trading_data: dict):
         
         # Computing the average spread
         spread_list.append(mt5.symbol_info(trading_data['market']).spread)
-        if len(spread_list) >= MAX_TICKS_LEN:
+        if len(spread_list) >= MAX_LEN_SPREAD:
             trading_data['avg_spread'] = sum(spread_list) / len(spread_list)
             del spread_list[0]
                 

@@ -20,7 +20,7 @@ def get_absolutes(ticks: list, indicators: dict, market: str):
     
     # Storing the difference between the current price
     # and the max and min values
-    current_price = mt5.symbol_info_tick(market).ask
+    current_price = ticks[-1]
     abs_min = min(ticks)
     abs_max = max(ticks)
     indicators['absolute_min']['difference'] = current_price-abs_min
@@ -62,7 +62,7 @@ def get_relatives(ticks: list, indicators: dict, market: str):
     # Not enough values in the list
     if i < 2: return
     
-    cur_price = mt5.symbol_info_tick(market).ask
+    cur_price = ticks[-1]
     
     # Flags
     min_found = False
