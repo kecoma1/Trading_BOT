@@ -55,7 +55,7 @@ def load_ticks(ticks: list, market: str, time_period: int):
     for tick in loaded_ticks:
         # Every X seconds we add a value to the list
         if tick[0] > second_to_include+time_period:
-            ticks.append(tick[1])
+            ticks.append(tick[2])
             second_to_include = tick[0]
     
     # Removing the ticks that we do not need
