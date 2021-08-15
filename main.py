@@ -4,14 +4,20 @@ import matplotlib.pyplot as plt
 # Creating a bot
 b = bot.Bot(0.01, 15*60, "EURUSD")
 
-usr = int(input("Introduce the user: "))
-password = input("Introduce the password: ")
-print("Hiding things xd ;)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+with open("login_data.txt", 'r') as f:
+    lines = f.readlines()
+    usr = int(lines[0])
+    password = lines[1]
+
 
 # Login into mt5
-b.mt5_login(usr, password)
+if not b.mt5_login(usr, password):
+    quit()
 b.thread_tick_reader()
+b.thread_slope_abs_rel()
 b.wait()
+
+print("Indicators:", b.indicators)
 
 # Haciendo una gráfica de los datos
 lista_segundos = b.get_ticks()

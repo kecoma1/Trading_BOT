@@ -1,6 +1,7 @@
 import threading
 import MetaTrader5 as mt5
 import tick_reader
+import slope_abs_rel
 
 class Bot:
     
@@ -55,8 +56,18 @@ class Bot:
         t = threading.Thread(target=tick_reader.thread_tick_reader, 
                              args=(self.pill2kill, self.ticks, self.trading_data,))
         self.threads.append(t)
-        print('Thread - tick reader. LAUNCHED')
         t.start()
+        print('Thread - tick_reader. LAUNCHED')
+    
+    def thread_slope_abs_rel(self):
+        """Function to launch the thread for calculating the slope
+        and, the absolute and relative points in the chart.
+        """
+        t = threading.Thread(target=slope_abs_rel.thread_slope_abs_rel, 
+                             args=(self.pill2kill, self.ticks, self.trading_data, self.indicators))
+        self.threads.append(t)
+        t.start()
+        print('Thread - slope_abs_rel. LAUNCHED')
 
     def mt5_login(self, usr: int, password: str) -> bool:
         """Function to initialize the metatrader 5 aplication
@@ -69,7 +80,6 @@ class Bot:
         Returns:
             bool: True if everything is OK, False if not
         """
-        
         # Initialize mt5 (if not already)
         if not mt5.initialize():
             print("initialize() failed, error code =",mt5.last_error())
