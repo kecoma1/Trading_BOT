@@ -3,7 +3,8 @@ import MetaTrader5 as mt5
 import time
 
 # Global variables
-N_FOR_SLOPE = 15
+N_FOR_SLOPE = 5
+
 
 def get_absolutes(ticks: list, indicators: dict, market: str):
     """Function to get the absolute points (maximum and minimum)
@@ -35,14 +36,15 @@ def get_absolutes(ticks: list, indicators: dict, market: str):
     i = 0
     for valor in ticks[::-1]:
         if valor == abs_min and not minimo_found:
-            indicators['absolute_min']['time'] = len(ticks) - i
+            indicators['absolute_min']['time'] = i
             minimo_found = True
         if valor == abs_max and not maximo_found:
-            indicators['absolute_max']['time'] = len(ticks) - i
+            indicators['absolute_max']['time'] = i
             maximo_found = True
         i+=1
         if minimo_found and maximo_found:
             break
+
 
 def get_relatives(ticks: list, indicators: dict, market: str):
     """Function to get the last relatives points stored in our 
@@ -58,7 +60,7 @@ def get_relatives(ticks: list, indicators: dict, market: str):
     """
     i = len(ticks)
     # Not enough values in the list
-    if i < N_FOR_SLOPE: return
+    if i < 2: return
     
     cur_price = mt5.symbol_info_tick(market).ask
     
@@ -75,8 +77,8 @@ def get_relatives(ticks: list, indicators: dict, market: str):
     # Iterating through the list backwards, storing the difference
     # between the current price and the price at the relative, and also
     # storing the number of periods since that relative
-    while i > N_FOR_SLOPE:
-        cur_slope = st.pendienteY(ticks[i-N_FOR_SLOPE:i])
+    while i > 2:
+        cur_slope = st.pendienteY(ticks[i-2:i])
         # Min?
         if prev_slope < 0 and cur_slope > 0 and not min_found:
             indicators['relative_min']['time'] = len(ticks) - i
@@ -92,6 +94,7 @@ def get_relatives(ticks: list, indicators: dict, market: str):
             break
         prev_slope = cur_slope
         i-=1
+
 
 def thread_slope_abs_rel(pill2kill, ticks: list, trading_data: dict, indicators: dict):
     """Function executed by a thread. It computes the actual slope and,

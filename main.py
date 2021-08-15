@@ -17,7 +17,6 @@ b.thread_tick_reader()
 b.thread_slope_abs_rel()
 b.wait()
 
-print("Indicators:", b.indicators)
 
 # Haciendo una gráfica de los datos
 lista_segundos = b.get_ticks()
