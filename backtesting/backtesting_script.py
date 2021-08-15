@@ -1,0 +1,15 @@
+import os
+
+print("Backtesting file 1/6 AUDUSD_5YEARS", end='\r')
+os.system('python backtester.py data/AUDUSD_5YEARS.log data/AUDUSD_5YEARS_backtested.log 15 AUDUSD')
+print("Backtesting file 2/6 EURUSD_5YEARS", end='\r')
+os.system('python backtester.py data/EURUSD_5YEARS.log data/EURUSD_5YEARS_backtested.log 15 EURUSD')
+print("Backtesting file 3/6 GBPUSD_5YEARS", end='\r')
+os.system('python backtester.py data/GBPUSD_5YEARS.log data/GBPUSD_5YEARS_backtested.log 15 GBPUSD')
+print("Backtesting file 4/6 USDCAD_5YEARS", end='\r')
+os.system('python backtester.py data/USDCAD_5YEARS.log data/USDCAD_5YEARS_backtested.log 15 USDCAD')
+print("Backtesting file 5/6 USDCHF_5YEARS", end='\r')
+os.system('python backtester.py data/USDCHF_5YEARS.log data/USDCHF_5YEARS_backtested.log 15 USDCHF')
+print("Backtesting file 6/6 USDJPY_5YEARS", end='\r')
+os.system('python backtester.py data/USDJPY_5YEARS.log data/USDJPY_5YEARS_backtested.log 15 USDJPY')
+print()

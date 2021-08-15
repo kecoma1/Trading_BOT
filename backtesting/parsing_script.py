@@ -1,0 +1,15 @@
+import os
+
+print("Parsing script 1/6 AUDUSD_5YEARS", end='\r')
+os.system('python csv_log_parser.py data/AUDUSD_5YEARS.csv data/AUDUSD_5YEARS.log')
+print("Parsing script 2/6 EURUSD_5YEARS", end='\r')
+os.system('python csv_log_parser.py data/EURUSD_5YEARS.csv data/EURUSD_5YEARS.log')
+print("Parsing script 3/6 GBPUSD_5YEARS", end='\r')
+os.system('python csv_log_parser.py data/GBPUSD_5YEARS.csv data/GBPUSD_5YEARS.log')
+print("Parsing script 4/6 USDCAD_5YEARS", end='\r')
+os.system('python csv_log_parser.py data/USDCAD_5YEARS.csv data/USDCAD_5YEARS.log')
+print("Parsing script 5/6 USDCHF_5YEARS", end='\r')
+os.system('python csv_log_parser.py data/USDCHF_5YEARS.csv data/USDCHF_5YEARS.log')
+print("Parsing script 6/6 USDJPY_5YEARS", end='\r')
+os.system('python csv_log_parser.py data/USDJPY_5YEARS.csv data/USDJPY_5YEARS.log')
+print()
