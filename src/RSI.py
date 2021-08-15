@@ -49,17 +49,14 @@ def RS(ticks: list) -> float:
     i = 0
     
     while i < len(ticks)-2:
-        print(ticks[i])
         if ticks[i] < ticks[i+1]:
             up += ticks[i+1]-ticks[i]
         elif ticks[i] > ticks[i+1]:
             down += ticks[i]-ticks[i+1]
         i+=1
     
-    print(len(ticks), up, down)
     up /= len(ticks)
     down /= len(ticks)
-    print(len(ticks), up, down, up/down)
     
     return up/down
 
@@ -95,5 +92,5 @@ def thread_RSI(pill2kill, ticks: list, indicators: dict):
     print("[THREAD - RSI] - Computing values")
     
     while not pill2kill.wait(1):
-        RSI = RSI(ticks[-N_for_RSI:])
-        indicators['RSI'] = RSI
+        RSI_value = RSI(ticks[-N_for_RSI:])
+        indicators['RSI'] = RSI_value

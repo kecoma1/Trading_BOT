@@ -1,6 +1,6 @@
 import threading
 import MetaTrader5 as mt5
-import tick_reader, slope_abs_rel
+import tick_reader, slope_abs_rel, orders
 import MACD, RSI
 
 class Bot:
@@ -84,6 +84,13 @@ class Bot:
         self.threads.append(t)
         t.start()
         print('Thread - RSI. LAUNCHED')
+    
+    def thread_orders(self):
+        t = threading.Thread(target=orders.thread_orders, 
+                             args=(self.pill2kill, self.trading_data))
+        self.threads.append(t)
+        t.start()
+        print('Thread - orders. LAUNCHED')
 
     def mt5_login(self, usr: int, password: str) -> bool:
         """Function to initialize the metatrader 5 aplication

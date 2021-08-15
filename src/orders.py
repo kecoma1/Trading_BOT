@@ -230,7 +230,10 @@ def thread_orders(pill2kill, trading_data: dict):
         trading_data (dict): Dictionary with all the needed data 
         for opening operations.
     """
+    print("[THREAD - orders] - Working")
+    
     last_operation = 0
+    print("[THREAD - orders] - Checking operations")
     while not pill2kill.wait(0.1):
         if check_buy() and last_operation > TIME_BETWEEN_OPERATIONS:
             buy = open_buy(trading_data)

@@ -1,3 +1,4 @@
 *.txt
+src/*txt
 __pycache__/
 src/__pycache__/

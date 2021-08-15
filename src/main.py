@@ -17,6 +17,7 @@ b.thread_tick_reader()
 b.thread_slope_abs_rel()
 b.thread_MACD()
 b.thread_RSI()
+b.thread_orders()
 b.wait()
 
 print(b.indicators)
