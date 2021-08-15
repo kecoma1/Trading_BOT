@@ -16,6 +16,7 @@ if not b.mt5_login(usr, password):
 b.thread_tick_reader()
 b.thread_slope_abs_rel()
 b.thread_MACD()
+b.thread_RSI()
 b.wait()
 
 print(b.indicators)

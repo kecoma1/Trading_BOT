@@ -84,7 +84,7 @@ def EMA(ticks: list, n: int):
     global PREV_EMA12, PREV_EMA26, PREV_EMA9
     
     if n != 12 and n != 26 and n != 9:
-        print("EMA function: N must be 12 or 26")
+        print("EMA function: N must be 12 or 26 or 9")
     
     # Not enough ticks in the list
     if n > len(ticks): return None
@@ -139,16 +139,15 @@ def SIGNAL():
     return EMA(MACDs[-9:], 9)
 
 
-def thread_macd(pill2kill, ticks: list, indicators: dict):
+def thread_macd(pill2kill, ticks: list, indicators: dict, trading_data: dict):
     """Function executed by a thread that calculates
     the MACD and the SIGNAL.
 
     Args:
-        pill2kill (Threading.Event): Event for stopping
-        the thread's execution.
+        pill2kill (Threading.Event): Event for stopping the thread's execution.
         ticks (list): List with prices.
-        indicators (dict): Dictionary where the data is
-        going to be stored.
+        indicators (dict): Dictionary where the data is going to be stored.
+        trading_data (dict): Dictionary where the data about our bot is stored.
     """
     global MACDs, CUR_SIGNAL, CUR_MACD, PREV_SIGNAL, PREV_MACD
     
@@ -180,11 +179,19 @@ def thread_macd(pill2kill, ticks: list, indicators: dict):
 
     # Main thread loop
     print("[THREAD - MACD] - Computing values")
+    i = 0
     while not pill2kill.wait(1):
         # Computing the MACD
         PREV_MACD = CUR_MACD
-        CUR_MACD = MACD(ticks[:i])
-        MACDs.append(CUR_MACD)
+        CUR_MACD = MACD(ticks[-26:])
+        
+        # Only append a MACD value every time period
+        if i >= trading_data['time_period']:
+            MACDs.append(CUR_MACD)
+            i = 0
+        else:
+            MACDs[-1] = CUR_MACD
+        i+=1
         
         # Computing the SIGNAL
         PREV_SIGNAL = CUR_SIGNAL

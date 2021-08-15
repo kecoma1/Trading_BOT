@@ -85,7 +85,7 @@ def thread_tick_reader(pill2kill, ticks: list, trading_data: dict):
     
     # Filling the list with actual ticks
     print("[THREAD - tick_reader] - Taking ticks")
-    i = 0
+    i = 1
     while not pill2kill.wait(1):
         
         # Every trading_data['time_period'] seconds we add a tick to the list
