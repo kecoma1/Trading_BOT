@@ -64,7 +64,7 @@ class Bot:
         and, the absolute and relative points in the chart.
         """
         t = threading.Thread(target=slope_abs_rel.thread_slope_abs_rel, 
-                             args=(self.pill2kill, self.ticks, self.trading_data, self.indicators))
+                             args=(self.pill2kill, self.ticks, self.indicators))
         self.threads.append(t)
         t.start()
         print('Thread - slope_abs_rel. LAUNCHED')

@@ -20,8 +20,6 @@ b.thread_RSI()
 b.thread_orders()
 b.wait()
 
-print(b.indicators)
-
 # Haciendo una gráfica de los datos
 lista_segundos = b.get_ticks()
 xAxis = []

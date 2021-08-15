@@ -125,18 +125,21 @@ def MACD(ticks):
         ticks (list): List with prices of the ticks
 
     Returns:
-        float: Value of the MACD
+        float: Value of the MACD.
     """
     return EMA(ticks[-12:], 12) - EMA(ticks[-26:], 26)
 
 
-def SIGNAL():
+def SIGNAL(values_list):
     """Function that computes the SIGNAL.
 
+    Args:
+        values_list (list): List with which we have to compute the values.
+
     Returns:
-        float: Value of the SIGNAL
+        float: Value of the SIGNAL.
     """
-    return EMA(MACDs[-9:], 9)
+    return EMA(values_list[-9:], 9)
 
 
 def thread_macd(pill2kill, ticks: list, indicators: dict, trading_data: dict):
@@ -172,7 +175,7 @@ def thread_macd(pill2kill, ticks: list, indicators: dict, trading_data: dict):
             continue
         else:
             PREV_SIGNAL = CUR_SIGNAL
-            CUR_SIGNAL = SIGNAL()
+            CUR_SIGNAL = SIGNAL(MACDs)
         
         if len(MACDs) > 9:
             del MACDs[0]
@@ -195,7 +198,7 @@ def thread_macd(pill2kill, ticks: list, indicators: dict, trading_data: dict):
         
         # Computing the SIGNAL
         PREV_SIGNAL = CUR_SIGNAL
-        CUR_SIGNAL = SIGNAL()
+        CUR_SIGNAL = SIGNAL(MACDs)
         
         # Updating the dictionary
         indicators['MACD']['MACD'] = CUR_MACD

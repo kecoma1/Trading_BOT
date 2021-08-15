@@ -1,4 +1,6 @@
 *.txt
+*.csv
+*.log
 src/*txt
 __pycache__/
 src/__pycache__/

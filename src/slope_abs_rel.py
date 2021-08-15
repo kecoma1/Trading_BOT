@@ -6,14 +6,13 @@ import time
 N_FOR_SLOPE = 5
 
 
-def get_absolutes(ticks: list, indicators: dict, market: str):
+def get_absolutes(ticks: list, indicators: dict):
     """Function to get the absolute points (maximum and minimum)
     of the already stored ticks in the list.
 
     Args:
         ticks (list): List of where ticks are stored.
         indicators (dict): Dictionary where the info is stored.
-        market (str): Market to check.
     """
     # Not enough values in the list
     if len(ticks) == 0: return
@@ -46,7 +45,7 @@ def get_absolutes(ticks: list, indicators: dict, market: str):
             break
 
 
-def get_relatives(ticks: list, indicators: dict, market: str):
+def get_relatives(ticks: list, indicators: dict):
     """Function to get the last relatives points stored in our 
     list of ticks. For that, we traverse the list backwards and
     in each iteration we compute the slope, if the slope has a 
@@ -56,7 +55,6 @@ def get_relatives(ticks: list, indicators: dict, market: str):
         ticks (list): List where all the ticks are stored.
         indicators (dict): Dictionary where the data is going to
         be stored.
-        market (str): Market where the data is stored.
     """
     i = len(ticks)
     # Not enough values in the list
@@ -96,14 +94,13 @@ def get_relatives(ticks: list, indicators: dict, market: str):
         i-=1
 
 
-def thread_slope_abs_rel(pill2kill, ticks: list, trading_data: dict, indicators: dict):
+def thread_slope_abs_rel(pill2kill, ticks: list, indicators: dict):
     """Function executed by a thread. It computes the actual slope and,
     the absolutes and relative points.
 
     Args:
         pill2kill (Threading.Event): Event to finish the thread's execution.
         ticks (list): List where the ticks are stored.
-        trading_data (dict): Dictionary where the data about our bot is stored.
         indicators (dict): Dictionary where the computed data has to be stored.
     """
     print("[THREAD - slope_abs_rel] - Working")
@@ -119,10 +116,10 @@ def thread_slope_abs_rel(pill2kill, ticks: list, trading_data: dict, indicators:
         indicators['slope'] = st.pendienteY(ticks[-N_FOR_SLOPE:])
         
         # Getting the absolute points
-        get_absolutes(ticks, indicators, trading_data['market'])
+        get_absolutes(ticks, indicators)
         
         # Getting the relative points
-        get_relatives(ticks, indicators, trading_data['market'])
+        get_relatives(ticks, indicators)
         
         
         
