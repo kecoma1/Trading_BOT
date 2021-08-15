@@ -1,6 +1,5 @@
 import time
 
-
 # Global variables
 N_for_RSI = 14
 RSI_value = None

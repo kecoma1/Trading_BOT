@@ -82,7 +82,7 @@ def thread_tick_reader(pill2kill, ticks: list, trading_data: dict):
     load_ticks(ticks, trading_data['market'], trading_data['time_period'])    
     
     print("[THREAD - tick_reader] - Ticks loaded")
-    
+   
     # Filling the list with actual ticks
     print("[THREAD - tick_reader] - Taking ticks")
     i = 1
