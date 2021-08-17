@@ -37,7 +37,7 @@ def load_ticks(ticks: list, market: str, time_period: int):
     # Checking if we are on the weekend (we include the friday),
     # if so, we take ticks from an earlier date.
     today = datetime.datetime.utcnow().date()
-    if today.weekday() >= 5: 
+    if today.weekday() >= 5 or today.weekday() == 0: 
         yesterday = today - datetime.timedelta(days=3)
     else:
         yesterday = today - datetime.timedelta(days=1)
@@ -79,7 +79,7 @@ def thread_tick_reader(pill2kill, ticks: list, trading_data: dict):
     print("[THREAD - tick_reader] - Working")
 
     # Filling the list with previos ticks
-    load_ticks(ticks, trading_data['market'], trading_data['time_period'])    
+    load_ticks(ticks, trading_data['market'], trading_data['time_period'])
     
     print("[THREAD - tick_reader] - Ticks loaded")
    

@@ -1,5 +1,3 @@
-import time
-
 # Global variables
 MACDs = []
 PREV_MACD = None
@@ -155,9 +153,8 @@ def thread_macd(pill2kill, ticks: list, indicators: dict, trading_data: dict):
     global MACDs, CUR_SIGNAL, CUR_MACD, PREV_SIGNAL, PREV_MACD
     
     # Wait if there are not enough elements
-    while len(ticks) < 35:
+    while len(ticks) < 35 and not pill2kill.wait(1.5):
         print("[THREAD - MACD] - Waiting for ticks")
-        time.sleep(1.5)
     
     print("[THREAD - MACD] - Loading values")
     # First we need to calculate the previous MACDs and SIGNALs

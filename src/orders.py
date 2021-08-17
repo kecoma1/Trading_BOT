@@ -136,7 +136,7 @@ def open_buy(trading_data: dict):
     result = mt5.order_send(compra)
     print("[Thread - orders] 1. order_send(): by {} {} lots at {} with deviation={} points".format(trading_data['market'],trading_data['lotage'],price,deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
-        print("[Thread - orders] Compra fallida: retcode={}".format(result.retcode))
+        print("[Thread - orders] Failed buy: retcode={}".format(result.retcode))
         return None
     return compra
 
@@ -176,11 +176,10 @@ def open_sell(trading_data: dict):
             print("[Thread - orders] symbol_select({}) failed, exit",trading_data['market'])
             return None
     
-    # Diccionario con los datos necesarios para la venta
     point = mt5.symbol_info(trading_data['market']).point
     price = mt5.symbol_info_tick(trading_data['market']).bid
     deviation = 20
-    venta = {
+    sell = {
         "action": mt5.TRADE_ACTION_DEAL,
         "symbol": trading_data['market'],
         "volume": trading_data['lotage'],
@@ -196,12 +195,12 @@ def open_sell(trading_data: dict):
     }
 
     # Sending the sell
-    result = mt5.order_send(venta)
+    result = mt5.order_send(sell)
     print("[Thread - orders] 1. order_send(): by {} {} lots at {} with deviation={} points".format(trading_data['market'],trading_data['lotage'],price,deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
-        print("[Thread - orders] Venta fallida: {}".format(result.retcode))
+        print("[Thread - orders] failed sell: {}".format(result.retcode))
         return None
-    return venta
+    return sell
 
 
 def check_buy() -> bool:
@@ -241,7 +240,7 @@ def thread_orders(pill2kill, trading_data: dict):
             if buy is not None:
                 now = date.datetime.now()
                 dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
-                print("[Thread - órdenes] Compra abierta -", dt_string)
+                print("[Thread - orders] Buy open -", dt_string)
                 handle_buy(buy, trading_data['market'])
                 buy = None
                
@@ -251,7 +250,7 @@ def thread_orders(pill2kill, trading_data: dict):
             if sell is not None:
                 now = date.datetime.now()
                 dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
-                print("[Thread - órdenes] Venta abierta -", dt_string)
+                print("[Thread - orders] Sell open -", dt_string)
                 handle_sell(sell, trading_data['market'])
                 sell = None
         last_operation += 1

@@ -1,5 +1,3 @@
-import time
-
 # Global variables
 N_for_RSI = 14
 RSI_value = None
@@ -85,9 +83,8 @@ def thread_RSI(pill2kill, ticks: list, indicators: dict):
     global RSI_value
     
     # If the list hasn't enough values we wait.
-    while len(ticks) < N_for_RSI:
+    while len(ticks) < N_for_RSI and not pill2kill.wait(1.5):
         print("[THREAD - RSI] - Waiting for ticks")
-        time.sleep(1.5)
     
     print("[THREAD - RSI] - Computing values")
     

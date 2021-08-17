@@ -1,6 +1,4 @@
 import statistic as st
-import MetaTrader5 as mt5
-import time
 
 # Global variables
 N_FOR_SLOPE = 5
@@ -106,9 +104,8 @@ def thread_slope_abs_rel(pill2kill, ticks: list, indicators: dict):
     print("[THREAD - slope_abs_rel] - Working")
     
     # Waiting until the list is ready
-    while len(ticks) < N_FOR_SLOPE: 
+    while len(ticks) < N_FOR_SLOPE and not pill2kill.wait(1.5): 
         print("[THREAD - slope_abs_rel] - Waiting for ticks")
-        time.sleep(1.5)
 
     print("[THREAD - slope_abs_rel] - Computing values")
     while not pill2kill.wait(1):

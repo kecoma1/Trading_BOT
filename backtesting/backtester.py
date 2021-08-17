@@ -36,6 +36,7 @@ def get_buy_result(FILENAME, n, open_price):
             return {"operation": "buy", "profit": profit, "success": 1}
         elif price <= fail_price:
             return {"operation": "buy", "profit": profit, "success": 0}
+    f.close()
 
 
 def get_sell_result(FILENAME, n, open_price):
@@ -58,6 +59,7 @@ def get_sell_result(FILENAME, n, open_price):
             return {"operation": "sell", "profit": profit, "success": 1}
         elif price >= fail_price:
             return {"operation": "sell", "profit": profit, "success": 0}
+    f.close()
 
 
 def check_buy(indicators, CUR_MACD, PREV_MACD, CUR_SIGNAL, PREV_SIGNAL):
@@ -138,6 +140,7 @@ for line in f1:
             indicators["MACD"]["SIGNAL"] = MACD.SIGNAL(MACDs)
             PREV_SIGNAL = CUR_SIGNAL
             CUR_SIGNAL = indicators["MACD"]["SIGNAL"]
+            del MACDs[0]
 
         # Computing the RSI
         indicators['RSI'] = RSI.RSI(ticks)
