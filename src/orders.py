@@ -23,7 +23,7 @@ def handle_buy(buy, market):
     GOAL = buy['price']+point*THRESHOLD
     while True:
         tick = mt5.symbol_info_tick(market)
-        if tick.bid >= GOAL:
+        if tick.ask >= GOAL:
             # Modifying the stop loss
             request = {
                 "action": mt5.TRADE_ACTION_SLTP,
@@ -57,7 +57,7 @@ def handle_sell(sell, market: str):
     GOAL = sell['price']-point*THRESHOLD
     while True:
         tick = mt5.symbol_info_tick(market)
-        if tick.ask <= GOAL:
+        if tick.bid <= GOAL:
             # Modifying the stop loss
             request = {
                 "action": mt5.TRADE_ACTION_SLTP,
@@ -117,7 +117,7 @@ def open_buy(trading_data: dict):
     point = mt5.symbol_info(trading_data['market']).point
     price = mt5.symbol_info_tick(trading_data['market']).ask
     deviation = 20
-    compra = {
+    buy = {
         "action": mt5.TRADE_ACTION_DEAL,
         "symbol": trading_data['market'],
         "volume": trading_data['lotage'],
@@ -133,12 +133,12 @@ def open_buy(trading_data: dict):
     }
 
     # Sending the buy
-    result = mt5.order_send(compra)
+    result = mt5.order_send(buy)
     print("[Thread - orders] 1. order_send(): by {} {} lots at {} with deviation={} points".format(trading_data['market'],trading_data['lotage'],price,deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
         print("[Thread - orders] Failed buy: retcode={}".format(result.retcode))
         return None
-    return compra
+    return buy
 
 
 def open_sell(trading_data: dict):
