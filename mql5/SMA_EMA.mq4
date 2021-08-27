@@ -58,7 +58,7 @@ bool up_trend(int handler) {
       n += array[i]-array[i-1];
    
    Print("up ", n);
-   return n > 0.0;
+   return n > 0.01;
 }
 
 bool down_trend(int handler) {
@@ -70,7 +70,7 @@ bool down_trend(int handler) {
       n += array[i]-array[i-1];
    
    Print("down ", n);
-   return n < 0.0;
+   return n < -0.01;
 }
 
 void OnTick() {
@@ -80,7 +80,7 @@ void OnTick() {
    if (PositionSelectByTicket(trade_ticket) == false) {
       operacion_abierta = false;
    } else {
-      handle_trade(trade_ticket);
+      //handle_trade(trade_ticket);
    }
    
    /* Compra? */
@@ -91,13 +91,12 @@ void OnTick() {
       /* Current price */
       double Ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
       
-      trade.Buy(1, _Symbol, Ask, Ask-200*_Point, Ask+600*_Point, NULL);
+      trade.Buy(3, _Symbol, Ask, Ask-200*_Point, Ask+600*_Point, NULL);
       trade_ticket = trade.ResultOrder();
       operacion_abierta = true;
-      time_passed = 0;
       price_flag = Ask+450*_Point;
       
-      EventSetTimer(60*60*4*10);
+      EventSetTimer(60*60*4*3);
    } else if (ma_array[3] > ema_array[3] 
    && ma_array[2] < ema_array[2] 
    && operacion_abierta == false 
@@ -105,10 +104,9 @@ void OnTick() {
       /* Current price */
       double Bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
       
-      trade.Sell(1, _Symbol, Bid, Bid+200*_Point, Bid-600*_Point, NULL);
+      trade.Sell(3, _Symbol, Bid, Bid+200*_Point, Bid-600*_Point, NULL);
       trade_ticket = trade.ResultOrder();
       operacion_abierta = true;
-      time_passed = 0;
       price_flag = Bid-450*_Point;
       
       EventSetTimer(60*60*4*3);
