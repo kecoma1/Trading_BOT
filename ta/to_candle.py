@@ -25,7 +25,7 @@ def from_tick_to_candle(filename, timeframe:int):
 
     Args:
         filename: filename of the csv with the ticks.
-        timeframe (int): Candle timeframe.
+        timeframe (int): Candle timeframe in seconds.
     
     Return:
         Pandas dataframe that contains columns such as:
