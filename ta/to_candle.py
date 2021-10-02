@@ -57,8 +57,8 @@ def from_tick_to_candle(filename, timeframe:int):
         ask = row[1]["<ASK>"]
         last_val = ask if ask>0 else bid
         
-        candle.set_high(ask)
-        candle.set_low(bid)
+        candle.set_high(bid)
+        candle.set_low(ask)
 
         # If we are in a new candle timeframe, we create
         # a new one, set the close of the one before and
@@ -66,7 +66,7 @@ def from_tick_to_candle(filename, timeframe:int):
         if prev_time+timeframe < cur_time:
             # Setting the close of the candle
             if bid > 0 and ask > 0:
-                candle.close = bid if ask<candle.open else ask
+                candle.close = bid if ask>candle.open else ask
             elif bid > 0:
                 candle.close = bid
             elif ask > 0:
