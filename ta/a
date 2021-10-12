@@ -1,0 +1,2 @@
+Para los de FAA, la corrección de laplace solo se aplica en los atributos donde dado cualquier valor del atributo la probabilidad dada la clase es 0 no?
+Osea si tenemos el atributo X y P(X_1|C) = 0, la corrección se aplicaría para el atributo entero X (X_1, X_2...), pero no para todo el dataset, osea los demás atributos, no?
