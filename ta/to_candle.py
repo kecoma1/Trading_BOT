@@ -8,7 +8,26 @@ class Candle:
         self.open = 0
         self.close = 0
         self.high = 0
-        self.low = 9223372036854775807 
+        self.low = 9223372036854775807
+    
+    def tick(self, tick, tick_type):
+        if self.close == 0:
+            self.close = tick
+            self.set_high(tick)
+            self.set_low(tick)
+        elif self.close < self.open and tick_type == "ask":
+            self.close = tick
+            self.set_high(tick)
+            self.set_low(tick)
+        elif self.close > self.open and tick_type == "bid":
+            self.close = tick
+            self.set_high(tick)
+            self.set_low(tick)
+
+    def set_open(self, tick, time):
+        if self.open == 0:
+            self.open = tick
+            self.open_time = time
 
     def set_low(self, new_low):
         self.low = new_low if new_low<self.low else self.low
