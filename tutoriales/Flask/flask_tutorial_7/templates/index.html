@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+
+{% block titlecontnet %}
+Index
+{% endblock %}
+
+{% block bodycontent %}
+    <h1>Número de visitas en la página: {{visits}}</h1>
+    <h1>
+        Hello! Ahoj! ¡Hola!<br>
+        <a href="/page_2">
+            CLICK
+        </a>
+        <br>
+        <a href="/EXAMPLE/esp_PAGINA">
+            Español
+        </a>
+        <br>
+        <a href="/EXAMPLE/czech_STRANA">
+            čeština
+        </a>
+        <br>
+        <a href="/EXAMPLE/eng_PAGE">
+            English
+        </a>
+        <br>
+        <form action="/page_3" method="post">
+            <input type="submit" value="Submit">
+        </form>
+    </h1>
+{% endblock %}

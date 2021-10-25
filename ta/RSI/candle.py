@@ -3,6 +3,8 @@ import MetaTrader5 as mt5
 import datetime
 import pytz
 
+MAX_CANDLES = 1000
+
 def load_previous_candles(market: str, period: int):
     """Function to load the previos candles given
     a market.
@@ -47,9 +49,8 @@ def load_previous_candles(market: str, period: int):
         candles[-1].tick(tick["ask"], "ask")
     return candles
 
-def thread_tick_reader(pill2kill, candles: list, trading_data: dict):
-    """Function executed by a thread. It fills the list of candles and
-    it also computes the average spread.
+def thread_candle(pill2kill, candles: list, trading_data: dict):
+    """Function executed by a thread. It fills the list of candles.
 
     Args:
         pill2kill (Threading.Event): Event to stop the execution of the thread.
@@ -67,6 +68,10 @@ def thread_tick_reader(pill2kill, candles: list, trading_data: dict):
             last_tick_time = time_sec
             candles.append(Candle())
             candles[-1].set_open(candles[-2].close, last_tick_time)
+            
+            # Deleting candles, we do not need a lot
+            if len(candles) > MAX_CANDLES:
+                del candles[0]
                 
         # The last tick is going to be changed all the time with the actual one
         bid = mt5.symbol_info_tick(trading_data['market']).bid

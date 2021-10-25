@@ -1,0 +1,11 @@
+sudo apt update
+
+sudo apt install python         # Installs python
+sudo apt install python-pip     # Installs pip
+
+# Installing mongodb
+pip install pymongo
+sudo apt install mongodb
+
+# Checking everything works fine
+sudo systemctl status mongodb

@@ -1,5 +1,5 @@
-import threading
 import MetaTrader5 as mt5
+import candle, RSI, threading
 
 class Bot:
     
@@ -12,10 +12,10 @@ class Bot:
             market (str): Market to operate in.
         """
         self.threads = []
-        candles = []
-        pill2kill = threading.Event()
+        self.candles = []
+        self.pill2kill = threading.Event()
         self.trading_data = {}
-        self.RSI = None
+        self.RSI = []
         self.trading_data['lotage'] = lotage
         self.trading_data['time_period'] = time_period
         self.trading_data['market'] = market
@@ -23,12 +23,20 @@ class Bot:
     def thread_candle(self):
         """Function to launch the candle thread.
         """
-        pass
+        t = threading.Thread(target=candle.thread_tick_reader, 
+                             args=(self.pill2kill, self.candles, self.trading_data))
+        self.threads.append(t)
+        t.start()
+        print('Thread - CANDLE. LAUNCHED')
     
     def thread_RSI(self):
         """Function to launch the thread for calculating the RSI.
         """
-        pass
+        t = threading.Thread(target=RSI.thread_rsi, 
+                             args=(self.pill2kill, self.candles, self.RSI, self.trading_data['time_period']))
+        self.threads.append(t)
+        t.start()
+        print('Thread - RSI. LAUNCHED')
 
     def thread_orders(self):
         """Function to launch the thread for sending orders.
