@@ -1,4 +1,6 @@
+from numpy import nan
 import pandas as pd
+import numpy as np
 from datetime import datetime   
 
 
@@ -8,26 +10,7 @@ class Candle:
         self.open = 0
         self.close = 0
         self.high = 0
-        self.low = 9223372036854775807
-    
-    def tick(self, tick, tick_type):
-        if self.close == 0:
-            self.close = tick
-            self.set_high(tick)
-            self.set_low(tick)
-        elif self.close < self.open and tick_type == "ask":
-            self.close = tick
-            self.set_high(tick)
-            self.set_low(tick)
-        elif self.close > self.open and tick_type == "bid":
-            self.close = tick
-            self.set_high(tick)
-            self.set_low(tick)
-
-    def set_open(self, tick, time):
-        if self.open == 0:
-            self.open = tick
-            self.open_time = time
+        self.low = 9223372036854775807 
 
     def set_low(self, new_low):
         self.low = new_low if new_low<self.low else self.low
@@ -44,7 +27,7 @@ def from_tick_to_candle(filename, timeframe:int):
 
     Args:
         filename: filename of the csv with the ticks.
-        timeframe (int): Candle timeframe in seconds.
+        timeframe (int): Candle timeframe.
     
     Return:
         Pandas dataframe that contains columns such as:
@@ -74,8 +57,8 @@ def from_tick_to_candle(filename, timeframe:int):
         ask = row[1]["<ASK>"]
         last_val = ask if ask>0 else bid
         
-        candle.set_high(bid)
-        candle.set_low(ask)
+        candle.set_high(ask)
+        candle.set_low(bid)
 
         # If we are in a new candle timeframe, we create
         # a new one, set the close of the one before and
@@ -83,7 +66,7 @@ def from_tick_to_candle(filename, timeframe:int):
         if prev_time+timeframe < cur_time:
             # Setting the close of the candle
             if bid > 0 and ask > 0:
-                candle.close = bid if ask>candle.open else ask
+                candle.close = bid if ask<candle.open else ask
             elif bid > 0:
                 candle.close = bid
             elif ask > 0:

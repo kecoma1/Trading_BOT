@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block titlecontnet %}
+{{name}}
+{% endblock %}
+
+{% block bodycontent %}
+    <h1>
+        {{ name }}
+        <br>
+        {% if "czech" in full_name %}
+        <i>Czech republic</i>
+        {% elif "esp" in full_name %}
+        <i>ESPAÑA, GRANDE Y LIBRE</i>
+        {% else %}
+        <i>English</i>
+        {% endif %}
+        <br>
+    </h1>
+    
+    {% for i in range(5) %}
+        {{ full_name }}<br>
+    {% endfor %}
+{% endblock %}

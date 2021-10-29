@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titlecontnet %}
+PAGE 3
+{% endblock %}
+
+{% block bodycontent %}
+    <h1>
+        This is the page 3!<br>The post was correctly done :-)<br>
+        <form action="/page_3" method="post">
+            <input type="text" name="username">
+            <input type="submit" value="Submit">
+        </form>
+    </h1>
+{% endblock %}

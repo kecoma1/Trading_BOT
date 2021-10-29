@@ -1,0 +1,5 @@
+man kill
+man 2 kill
+man signal
+
+kill -l

@@ -1,0 +1,23 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>
+            {{ name }}
+            <br>
+            {% if "czech" in full_name %}
+            <i>Czech republic</i>
+            {% elif "esp" in full_name %}
+            <i>ESPAÑA, GRANDE Y LIBRE</i>
+            {% else %}
+            <i>English</i>
+            {% endif %}
+            <br>
+        </h1>
+        
+        {% for i in range(2) %}
+            {{ full_name }}<br>
+        {% endfor %}
+        
+    </body>
+</html>

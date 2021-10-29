@@ -8,7 +8,26 @@ class Candle:
         self.open = 0
         self.close = 0
         self.high = 0
-        self.low = 9223372036854775807 
+        self.low = 9223372036854775807
+    
+    def tick(self, tick, tick_type):
+        if self.close == 0:
+            self.close = tick
+            self.set_high(tick)
+            self.set_low(tick)
+        elif self.close < self.open and tick_type == "ask":
+            self.close = tick
+            self.set_high(tick)
+            self.set_low(tick)
+        elif self.close > self.open and tick_type == "bid":
+            self.close = tick
+            self.set_high(tick)
+            self.set_low(tick)
+
+    def set_open(self, tick, time):
+        if self.open == 0:
+            self.open = tick
+            self.open_time = time
 
     def set_low(self, new_low):
         self.low = new_low if new_low<self.low else self.low
@@ -18,6 +37,25 @@ class Candle:
 
     def get_info(self):
         return [self.open_time, self.open, self.close, self.high, self.low]
+    
+def from_list_to_df(candles):
+    """Function that given a list of candles, it 
+    returns a pandas dataframe with all those candles.
+
+    Args:
+        candles (list): List of candles.
+
+    Returns:
+        pandas.dataframe: Dataframe with all the candles.
+    """
+    candle_df = pd.DataFrame(columns=["TIME-UTC", 
+                                        "OPEN", 
+                                        "CLOSE", 
+                                        "HIGH", 
+                                        "LOW"])
+    for i, candle in enumerate(candles):
+        candle_df.loc[i] = candle.get_info()
+    return candle_df
 
 
 def from_tick_to_candle(filename, timeframe:int):
