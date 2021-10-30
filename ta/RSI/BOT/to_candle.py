@@ -10,7 +10,7 @@ class Candle:
         self.high = 0
         self.low = 9223372036854775807
     
-    def tick(self, tick, tick_type):
+    def tick(self, tick):
         self.close = tick
         self.set_high(tick)
         self.set_low(tick)

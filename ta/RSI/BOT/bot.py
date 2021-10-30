@@ -1,5 +1,5 @@
 import MetaTrader5 as mt5
-import candle, RSI, threading
+import candle, RSI, threading, orders
 
 class Bot:
     
@@ -40,7 +40,11 @@ class Bot:
     def thread_orders(self):
         """Function to launch the thread for sending orders.
         """
-        pass
+        t = threading.Thread(target=orders.thread_orders, 
+                             args=(self.pill2kill, self.data, self.trading_data))
+        self.threads.append(t)
+        t.start()
+        print('Thread - ORDERS. LAUNCHED')
 
     """def mt5_login(self, usr: int, server: str, password: str) -> bool:
         """"""Function to initialize the metatrader 5 aplication

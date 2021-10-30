@@ -23,7 +23,7 @@ def thread_rsi(pill2kill, data: dict, time_period: int):
     ep = datetime.datetime(1970,1,1,0,0,0)
     time_sec = 1
     while time_sec % time_period != 0:
-        time.sleep(0.5)
+        time.sleep(0.1)
         time_sec = int((datetime.datetime.utcnow()- ep).total_seconds())
 
     print('[Thread RSI] - Loading RSI...')
@@ -34,6 +34,3 @@ def thread_rsi(pill2kill, data: dict, time_period: int):
         rsi_object = RSIIndicator(candle_df["CLOSE"], window=14, fillna=True)
         rsi_series = rsi_object.rsi()
         data["RSI"] = [rsi_series.iloc[-1], rsi_series.iloc[-2]]
-        print("RSI")
-        for i in range(1 ,10):
-            print(rsi_series.iloc[i*-1])
