@@ -12,10 +12,9 @@ class Bot:
             market (str): Market to operate in.
         """
         self.threads = []
-        self.candles = []
+        self.data = {'candles': [], 'RSI': [], 'candles_ready': False}
         self.pill2kill = threading.Event()
         self.trading_data = {}
-        self.RSI = []
         self.trading_data['lotage'] = lotage
         self.trading_data['time_period'] = time_period
         self.trading_data['market'] = market
@@ -23,8 +22,8 @@ class Bot:
     def thread_candle(self):
         """Function to launch the candle thread.
         """
-        t = threading.Thread(target=candle.thread_tick_reader, 
-                             args=(self.pill2kill, self.candles, self.trading_data))
+        t = threading.Thread(target=candle.thread_candle, 
+                             args=(self.pill2kill, self.data, self.trading_data))
         self.threads.append(t)
         t.start()
         print('Thread - CANDLE. LAUNCHED')
@@ -33,7 +32,7 @@ class Bot:
         """Function to launch the thread for calculating the RSI.
         """
         t = threading.Thread(target=RSI.thread_rsi, 
-                             args=(self.pill2kill, self.candles, self.RSI, self.trading_data['time_period']))
+                             args=(self.pill2kill, self.data, self.trading_data['time_period']))
         self.threads.append(t)
         t.start()
         print('Thread - RSI. LAUNCHED')
@@ -43,28 +42,23 @@ class Bot:
         """
         pass
 
-    def mt5_login(self, usr: int, password: str) -> bool:
-        """Function to initialize the metatrader 5 aplication
+    """def mt5_login(self, usr: int, server: str, password: str) -> bool:
+        """"""Function to initialize the metatrader 5 aplication
         and login wiht our account details.
 
         Args:
             usr (int): User ID.
-            password (str): Password
+            server (str): Server.
+            password (str): Password.
 
         Returns:
             bool: True if everything is OK, False if not
-        """
+        """"""
         # Initialize mt5 (if not already)
-        if not mt5.initialize():
+        if not mt5.initialize(login=usr, server=server,password=password):
             print("initialize() failed, error code =",mt5.last_error())
             return False
-        
-        # Login into mt5
-        authorized=mt5.login(usr, password)
-        if not authorized:
-            print("failed to connect at account #{}, error code: {}".format(usr, mt5.last_error()))
-            return False
-        return True
+        return True"""
     
     def kill_threads(self):
         """Function to kill all the loaded threads.
