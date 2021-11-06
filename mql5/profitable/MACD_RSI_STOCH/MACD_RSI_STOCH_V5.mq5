@@ -25,6 +25,13 @@ bool time_passed = true;
 double goal_price = 0;
 double next_sl = 0;
 
+/* For operations */
+CTrade trade;
+ulong trade_ticket = 0;
+bool time_passed = true;
+double goal_price = 0;
+double next_sl = 0;
+
 /* =============================================================================== */
 
 /* 1000 EUR == 0.05 Lots */
