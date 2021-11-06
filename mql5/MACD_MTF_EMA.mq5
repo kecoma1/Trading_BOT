@@ -93,7 +93,6 @@ bool macd_buy_divergence() {
       }
    }
    
-   Print("BUY POR QUE ME SALGO ", sell_cross_between);
    return false;
 }
 
@@ -112,7 +111,6 @@ bool macd_sell_divergence() {
       }
    }
 
-   Print("SELL POR QUE ME SALGO ", buy_cross_between);
    return false;
 }
 
@@ -202,12 +200,6 @@ void OnTick() {
    
    /* Checking if there's an open operation */
    if (PositionSelectByTicket(trade_ticket) == false) trade_ticket = 0;
-   
-   if (macd_buy_cross(0)) {
-      Print("BUY ", mtf_buy(), " ", macd_buy_divergence(), " ", price_buy_divergence());
-   } else if (macd_sell_cross(0)) {
-      Print("SELL ", mtf_sell(), " ", macd_sell_divergence(), " ", price_sell_divergence());
-   }
    
    /* Conditions for operations */
    if (mtf_buy() && macd_buy_cross(0) && macd_buy_divergence() && price_buy_divergence()
