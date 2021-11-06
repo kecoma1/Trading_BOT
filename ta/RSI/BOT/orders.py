@@ -5,8 +5,8 @@ RSI_BUY_THRESHOLD = 70
 RSI_SELL_THRESHOLD = 30
 CANDLES_BETWEEN_OPERATIONS = 3
 
-STOPLOSS = 0
-TAKEPROFIT = 0
+STOPLOSS = 10
+TAKEPROFIT = 20
 
 def open_position(market, lotage, type_op):
     """Function to open a position.
@@ -17,18 +17,17 @@ def open_position(market, lotage, type_op):
         type_op (string): Type of the operation
     """
     point = mt5.symbol_info(market).point
+    price = mt5.symbol_info_tick(market).ask
     
     if type_op == "buy":
-        price = mt5.symbol_info_tick(market).ask
         sl = price-STOPLOSS*point
         tp = price+TAKEPROFIT*point
     else:
-        price = mt5.symbol_info_tick(market).ask
-        sl = price-STOPLOSS*point
-        tp = price+TAKEPROFIT*point
+        sl = price+STOPLOSS*point
+        tp = price-TAKEPROFIT*point
 
     deviation = 20
-    buy = {
+    operation = {
         "action": mt5.TRADE_ACTION_DEAL,
         "symbol": market,
         "volume": lotage,
@@ -44,10 +43,10 @@ def open_position(market, lotage, type_op):
     }
 
     # Sending the buy
-    result = mt5.order_send(buy)
+    result = mt5.order_send(operation)
     print("[Thread - orders] 1. order_send(): by {} {} lots at {} with deviation={} points".format(market,lotage,price,deviation))
     if result.retcode != mt5.TRADE_RETCODE_DONE:
-        print("[Thread - orders] Failed buy: retcode={}".format(result.retcode))
+        print("[Thread - orders] Failed operation: retcode={}".format(result.retcode))
         return None    
 
 def thread_orders(stop_event, data, trading_data):
@@ -61,6 +60,10 @@ def thread_orders(stop_event, data, trading_data):
     """
     last_operation_time = 0
     ep = datetime.datetime(1970,1,1,0,0,0)
+    
+    while not data["rsi_ready"]:
+        pass
+    
     while not stop_event.wait(10):
         cur_time = int((datetime.datetime.utcnow()- ep).total_seconds())
         if data["RSI"][0] > RSI_BUY_THRESHOLD and cur_time > last_operation_time+trading_data["time_period"]*CANDLES_BETWEEN_OPERATIONS: # Open buy

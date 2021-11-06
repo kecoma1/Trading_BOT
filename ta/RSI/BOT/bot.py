@@ -12,7 +12,7 @@ class Bot:
             market (str): Market to operate in.
         """
         self.threads = []
-        self.data = {'candles': [], 'RSI': [], 'candles_ready': False}
+        self.data = {'candles': [], 'RSI': [], 'candles_ready': False, 'rsi_ready': False}
         self.pill2kill = threading.Event()
         self.trading_data = {}
         self.trading_data['lotage'] = lotage

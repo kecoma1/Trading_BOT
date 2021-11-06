@@ -64,6 +64,7 @@ def thread_candle(pill2kill, data: dict, trading_data: dict):
     data["candles_ready"] = True
     last_tick_time = data["candles"][-1].open_time
     ep = datetime.datetime(1970,1,1,0,0,0)
+    
     while not pill2kill.wait(0.1):
         time_sec = int((datetime.datetime.utcnow()- ep).total_seconds())
         # Every trading_data['time_period'] seconds we add a tick to the list
@@ -79,3 +80,4 @@ def thread_candle(pill2kill, data: dict, trading_data: dict):
         # The last tick is going to be changed all the time with the actual one
         bid = mt5.symbol_info_tick(trading_data['market']).bid
         data["candles"][-1].tick(bid)
+        

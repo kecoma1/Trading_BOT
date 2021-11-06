@@ -18,11 +18,18 @@ def thread_rsi(pill2kill, data: dict, time_period: int):
     while not data["candles_ready"]:
         time.sleep(1)
     
+    # Indicator object
+    candle_df = from_list_to_df(data["candles"])
+    rsi_object = RSIIndicator(candle_df["CLOSE"], window=14, fillna=True)
+    rsi_series = rsi_object.rsi()
+    data["RSI"] = [rsi_series.iloc[-2], rsi_series.iloc[-3]]
+    data["rsi_ready"] = True
+
     # For sinchronizing
     print("[Thread RSI] - Sinchronizing...")
     ep = datetime.datetime(1970,1,1,0,0,0)
     time_sec = 1
-    while time_sec % time_period != 0:
+    while time_sec % time_period != 0 and not pill2kill.wait(0.5):
         time.sleep(0.1)
         time_sec = int((datetime.datetime.utcnow()- ep).total_seconds())
 
@@ -33,4 +40,5 @@ def thread_rsi(pill2kill, data: dict, time_period: int):
         # Indicator object
         rsi_object = RSIIndicator(candle_df["CLOSE"], window=14, fillna=True)
         rsi_series = rsi_object.rsi()
-        data["RSI"] = [rsi_series.iloc[-1], rsi_series.iloc[-2]]
+        data["RSI"] = [rsi_series.iloc[-2], rsi_series.iloc[-3]]
+        
