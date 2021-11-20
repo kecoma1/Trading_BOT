@@ -1,10 +1,10 @@
 #include <fcntl.h>
 #include <mqueue.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/stat.h>
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #define MQ_NAME "/mq_cola_queue"
 
 typedef struct {
@@ -21,15 +21,10 @@ int main(void) {
 
     mqd_t queue = mq_open(MQ_NAME, O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR, &attributes);
 
-    if (queue == (mqd_t)-1) {
-        perror("CLIENT: mq_open");
-        exit(EXIT_FAILURE);
-    }
+    Mensaje struct_to_send;
+    strcpy(struct_to_send.msg, "Este es el mensaje que voy a enviar");
 
-    Mensaje msg;
-    strcpy(msg.msg, "I send a message");
-
-    mq_send(queue, (char *)&msg, sizeof(msg), 1);
+    mq_send(queue, (char *)&struct_to_send, sizeof(struct_to_send), 1);
 
     /* Wait for input to end the program */
     fprintf(stdout, "Press any key to finish\n");

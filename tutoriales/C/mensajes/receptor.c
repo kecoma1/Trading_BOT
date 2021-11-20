@@ -19,20 +19,16 @@ int main(void) {
     };
 
     mqd_t queue = mq_open(MQ_NAME,
-        O_CREAT | O_RDONLY | O_NONBLOCK,
+        O_CREAT | O_RDONLY,
         S_IRUSR | S_IWUSR,
         &attributes);
 
-    if(queue == (mqd_t)-1) {
-        fprintf(stderr, "Error opening the queue\n");
-        return EXIT_FAILURE;
-    }
 
-    Mensaje msg;
+    Mensaje struct_to_receive;
 
-    mq_receive(queue, (char *)&msg, sizeof(msg), NULL);
+    mq_receive(queue, (char *)&struct_to_receive, sizeof(struct_to_receive), NULL);
 
-    printf("%s\n", msg.msg);
+    printf("RECEPTOR: %s\n", struct_to_receive.msg);
 
     /* Wait for input to end the program */
     fprintf(stdout, "Press any key to finish\n");
