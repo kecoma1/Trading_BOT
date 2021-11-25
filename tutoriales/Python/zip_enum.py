@@ -1,4 +1,3 @@
-import enum
 from faker import Faker
 
 # Just for random strings
