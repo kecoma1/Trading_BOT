@@ -13,7 +13,7 @@ int main() {
         linked_list_destroy(l);
         return -1;
     }
-    if (linked_list_add_node(l, 2) == -1) {
+    if (linked_list_add_node(l, 2589) == -1) {
         fprintf(stderr, "Error adding a node.\n");
         linked_list_destroy(l);
         return -1;
@@ -23,8 +23,23 @@ int main() {
         linked_list_destroy(l);
         return -1;
     }
+    if (linked_list_add_node(l, 348) == -1) {
+        fprintf(stderr, "Error adding a node.\n");
+        linked_list_destroy(l);
+        return -1;
+    }
+    
+    if (linked_list_add_node(l, 30) == -1) {
+        fprintf(stderr, "Error adding a node.\n");
+        linked_list_destroy(l);
+        return -1;
+    }
+    if (linked_list_add_node(l, 18) == -1) {
+        fprintf(stderr, "Error adding a node.\n");
+        linked_list_destroy(l);
+        return -1;
+    }
 
     linked_list_print(l);
     linked_list_destroy(l);
-
 }

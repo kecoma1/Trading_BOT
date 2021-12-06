@@ -109,8 +109,9 @@ void linked_list_print(Linked_list *l) {
     printf("Linked list, number of nodes: %d\n", l->num_nodes);
     Node *n = l->root_node;
     while (n != NULL) {
-        printf("Node - data: %d\n", n->data);
+        printf("Node - data: %d -> ", n->data);
         n = n->next;
     }
+    printf("\n");
 }
 
