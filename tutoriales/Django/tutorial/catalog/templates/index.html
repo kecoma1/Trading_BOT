@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<p><strong><a href="{% url 'books' %}">Number of books</a></strong>: {{ num_books }}</p>
+	<p><strong><a href="{% url 'authors' %}">Number of authors</a></strong>: {{ num_authors }}</p>
+{% endblock %}

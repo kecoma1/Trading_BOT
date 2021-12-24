@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>Books</h1>
+	<ul>
+		{% for book in book_list %}
+		<li>
+			Title: <a href="{% url 'book' book.slug %}">{{ book.title }}</a>
+			Price: {{ book.price }}
+			Authors: 
+			{% for author in book.author.all %}
+			<a href="{% url 'author' author.slug %}">{{ author }}</a>
+			{% endfor %}
+		</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

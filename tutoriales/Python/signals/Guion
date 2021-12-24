@@ -1,6 +1,0 @@
-- Explcar las señales. Generan interrupciones en un proceso
-- Documentación señales. https://docs.python.org/3/library/signal.html
-- Lista de señales. kill -l
-- SIGKILL no se puede cambiar - Mostrarlo en la Documentación
-- Creamos el handler y establecemos el manejador
-- test

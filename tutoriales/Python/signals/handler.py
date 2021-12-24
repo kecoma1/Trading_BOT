@@ -1,10 +1,12 @@
 import signal
 
+# DOCUMENTATION!
+# https://docs.python.org/3/library/signal.html
+
 
 def signal_handler(signum, frame):
     """Handler"""
-    print("Signal Number:", signum, " Frame: ", frame)
-    print("Instead of closing my self I will continue executing")
+    print("En vez de cerrarme voy a printear esto.")
 
 
 # Setting the handler
