@@ -69,8 +69,8 @@ class NeuralNetwork {
 
 
 int main() {
-  	/* initialize random seed: */
-  	srand(time(NULL));
+	/* initialize random seed: */
+	srand(time(NULL));
 	short layersConfig[] = {2, 3, 4}; 
 	NeuralNetwork nn(3, layersConfig, true);
 	return 0;
