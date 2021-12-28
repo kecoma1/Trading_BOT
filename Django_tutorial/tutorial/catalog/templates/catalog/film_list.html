@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Film List</h1>
+<ul>
+	{% for film in film_list %}
+		<li>Title: {{film.title}}, Price: {{film.price}}, Score: {{film.score}}, Actors:
+		{% for actor in film.actor.all %} 
+			{{actor}} -
+		{% endfor %} 
+		</li>
+	{% endfor %}
+</ul>
+{% endblock %}

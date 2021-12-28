@@ -7,7 +7,7 @@
 {% block content %}
 <h1>Kevin Films</h1>
 <ul>
-	<li><strong>Number of actors</strong>: {{ number_actors }}</li>
-	<li><strong>Number of films</strong>: {{ number_films }}</li>
+	<li><strong><a href="{% url 'actors' %}">Number of actors</a></strong>: {{ number_actors }}</li>
+	<li><strong><a href="{% url 'films' %}">Number of films</a></strong>: {{ number_films }}</li>
 </ul>
 {% endblock %}

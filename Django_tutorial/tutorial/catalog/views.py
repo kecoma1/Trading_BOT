@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Actor, Film
+from django.views import generic
 
 def home_page(request):
 	num_actors = Actor.objects.all().count()
@@ -11,3 +12,14 @@ def home_page(request):
 	}
 
 	return render(request, 'index.html', context=data_dict)
+
+
+class ActorListView(generic.ListView):
+	model = Actor
+	context_object_name = 'actor_list'
+
+
+class FilmListView(generic.ListView):
+	model = Film
+	context_object_name = 'film_list'
+

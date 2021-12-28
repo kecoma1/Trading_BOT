@@ -20,6 +20,9 @@ class Actor(models.Model):
 	def display_films(self):
 		return ', '.join(str(film) for film in Film.objects.filter(actor=self))
 
+	def get_films(self):
+		return Film.objects.filter(actor=self)
+
 
 
 class Film(models.Model):
