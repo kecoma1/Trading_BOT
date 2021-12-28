@@ -1,9 +1,11 @@
 
 from django.urls import path, include
 from catalog.views import home_page
-from .views import FilmListView, ActorListView
+from . import views
 
 urlpatterns = [
-    path('films/', FilmListView.as_view(), name='films'),
-    path('actors/', ActorListView.as_view(), name='actors'),
+    path('films/', views.FilmListView.as_view(), name='films'),
+    path('actors/', views.ActorListView.as_view(), name='actors'),
+    path('actor/<slug:slug>/', views.ActorDetailView.as_view(), name='actor'),
+    path('film/<slug:slug>/', views.FilmDetailView.as_view(), name='film'),
 ]

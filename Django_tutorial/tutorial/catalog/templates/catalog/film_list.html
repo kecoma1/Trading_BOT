@@ -4,9 +4,9 @@
 <h1>Film List</h1>
 <ul>
 	{% for film in film_list %}
-		<li>Title: {{film.title}}, Price: {{film.price}}, Score: {{film.score}}, Actors:
+		<li>Title: <a href="{% url 'film' film.slug %}">{{film.title}}</a>, Price: {{film.price}}, Score: {{film.score}}, Actors:
 		{% for actor in film.actor.all %} 
-			{{actor}} -
+		<a href="{% url 'actor' actor.slug %}">{{actor}}</a> -
 		{% endfor %} 
 		</li>
 	{% endfor %}

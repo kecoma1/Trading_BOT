@@ -4,9 +4,9 @@
 <h1>Actor List</h1>
 <ul>
 	{% for actor in actor_list %}
-		<li>Name: {{actor.name}}, Age: {{actor.age}}, Films:
+		<li>Name: <a href="{% url 'actor' actor.slug %}">{{actor.name}}</a>, Age: {{actor.age}}, Films:
 		{% for film in actor.get_films %} 
-			{{film}} - 
+			<a href="{% url 'film' film.slug %}">{{film}}</a> - 
 		{% endfor %} 
 		</li>
 	{% endfor %}

@@ -23,3 +23,10 @@ class FilmListView(generic.ListView):
 	model = Film
 	context_object_name = 'film_list'
 
+
+class ActorDetailView(generic.DetailView):
+	model = Actor
+
+
+class FilmDetailView(generic.DetailView):
+	model = Film
