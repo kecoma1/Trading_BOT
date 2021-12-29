@@ -43,7 +43,7 @@ class Film(models.Model):
 		return self.title
 
 	def display_actors(self):
-		return '| '.join(str(actor) for actor in self.actor.all())
+		return ' | '.join(str(actor) for actor in self.actor.all())
 
 
 class Comment(models.Model):

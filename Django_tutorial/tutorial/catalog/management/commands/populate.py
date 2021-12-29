@@ -34,4 +34,5 @@ class Command(BaseCommand):
 
 		for i in range(10):
 			c = Comment(text="Comment "+str(i), film=Film.objects.all()[random.randint(0, len(film_names)-1)])
+			c.save()
 
