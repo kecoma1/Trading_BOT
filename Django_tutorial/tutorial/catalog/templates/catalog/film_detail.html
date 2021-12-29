@@ -5,7 +5,7 @@
 <p>Price: {{film.price}}</p>
 <p>Score: {{film.score}}</p>
 <p>Give it a score!</p>
-<form action="post_score" method="post">
+<form action="post_score/" method="post">
 	{% csrf_token %}
 	<input type="number" id="score" name="score" max=10 min=0>
 	<input type="submit" value="Score">
