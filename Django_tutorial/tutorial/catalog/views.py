@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Actor, Film
 from django.views import generic
 
@@ -30,3 +30,11 @@ class ActorDetailView(generic.DetailView):
 
 class FilmDetailView(generic.DetailView):
 	model = Film
+
+
+def post_score(request, slug):
+	score = request.POST.get("score")
+	film = Film.objects.filter(slug=slug)[0]
+	if score is not None:
+		film.set_score(int(score))
+	return redirect(film.get_absolute_url())

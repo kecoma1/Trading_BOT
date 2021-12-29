@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 
 
 class Actor(models.Model):
@@ -44,6 +45,13 @@ class Film(models.Model):
 
 	def display_actors(self):
 		return ' | '.join(str(actor) for actor in self.actor.all())
+
+	def set_score(self, score):
+		self.score = score
+		self.save()
+
+	def get_absolute_url(self):
+		return reverse('film', kwargs={'slug': self.slug})
 
 
 class Comment(models.Model):
