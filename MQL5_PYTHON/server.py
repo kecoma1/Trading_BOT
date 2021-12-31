@@ -9,7 +9,7 @@ connection, addr = serversocket.accept()
 print("[INFO]\tConnection stablished with:", addr)
 
 msg = ""
-while "END CONNECTION\0" in msg:
+while not "END CONNECTION\0" in msg:
     msg = connection.recv(1024).decode()
     print("[INFO]\t Message:", msg)
 connection.close()
