@@ -8,9 +8,6 @@ serversocket.listen(10)
 connection, addr = serversocket.accept()
 print("[INFO]\tConexión establecida con:", addr)
 
-data = "BUY|0.01|30|90"
-# serversocket.send(data.encode())
-
 msg = "\0"
 while not "END CONNECTION\0" in msg and msg != "":
     msg = connection.recv(1024).decode()
