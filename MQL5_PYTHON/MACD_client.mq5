@@ -36,9 +36,6 @@ int      macd_h;                 // MACD handle
 double   macd[];
 double   signal[];
 
-/* Timer variables */
-short MILLISECONDS_TIMEOUT = 250;
-
 
 void OnInit() {
    macd_h = iMACD(_Symbol, _Period, 12, 26, 9, PRICE_CLOSE);
