@@ -24,13 +24,6 @@ MESSAGES TO RECEIVE IMPLEMENTED:
 #include <Trade/Trade.mqh>
 CTrade trade;
 
-/* Messages variables */
-short  OP_NUM_PARTS = 4;
-short  ACTION_POS = 0;
-short  OP_LOTAGE_POS = 1;
-short  OP_SL_POS = 2;
-short  OP_TP_POS = 3;
-
 
 /* Socket variables */
 string   address = "localhost";
@@ -45,20 +38,6 @@ double   signal[];
 
 /* Timer variables */
 short MILLISECONDS_TIMEOUT = 250;
-
-/* Functions for operations */
-short  BUY_OP = 1;
-short  SELL_OP = 1;
-
-void open_operation(double lotage, int sl, int tp, short op_type) {
-   if (op_type == BUY_OP) {
-      double Ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
-      trade.Buy(lotage, _Symbol, Ask, sl != 0 ? Ask-sl*_Point : 0, tp != 0 ? Ask+tp*_Point : 0, NULL);
-   } else if (op_type == SELL_OP) {
-      double Bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
-      trade.Sell(lotage, _Symbol, Bid, sl != 0 ? Bid+sl*_Point : 0, tp != 0 ? Bid-tp*_Point : 0, NULL);
-   } else Print("Error - 6: Wrong operation type.");
-}
 
 
 void OnInit() {
