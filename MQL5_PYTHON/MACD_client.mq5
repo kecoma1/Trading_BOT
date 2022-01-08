@@ -72,10 +72,6 @@ void OnInit() {
       if (SocketConnect(socket, address, port, 10000)) Print("[INFO]\tConnection stablished");
       else Print("Error - 2: SocketConnect failure. ", GetLastError());
    }
-   
-   // Every 250 miliseconds we are going to check if the server sent
-   // something such as a petition for openning a buy or a sell
-   EventSetMillisecondTimer(MILLISECONDS_TIMEOUT);
 }
 
 
@@ -105,41 +101,4 @@ void OnTick() {
    char req[];
    int len = StringToCharArray(msg, req)-1;
    SocketSend(socket, req, len);
-}
-
-void OnTimer() {
-   /* If there's a message in the socket, we read it */
-   while (SocketIsReadable(socket) > 0) {
-      char req[];
-      SocketRead(socket, req, MAX_BUFF_LEN, 100);
-      string msg = CharArrayToString(req);
-      
-      // Splitting the string
-      ushort u_sep = StringGetCharacter("|", 0);
-      string msg_parts[];
-      int msg_num_parts = StringSplit(msg, u_sep, msg_parts);
-      
-      if (msg_num_parts != 0) {
-         // Interpreting the message
-         if (StringCompare(msg_parts[ACTION_POS], "BUY") == 0) {
-            if (msg_num_parts == OP_NUM_PARTS) {
-               open_operation(StringToDouble(msg_parts[OP_LOTAGE_POS]),
-                             (int)StringToInteger(msg_parts[OP_SL_POS]),
-                             (int)StringToInteger(msg_parts[OP_TP_POS]),
-                             SELL_OP);
-            } else Print("Error - 5: Operation message without enough parameters.");
-         } else if (StringCompare(msg_parts[ACTION_POS], "SELL") == 0) {
-            if (msg_num_parts == OP_NUM_PARTS) {
-               open_operation(StringToDouble(msg_parts[OP_LOTAGE_POS]),
-                             (int)StringToInteger(msg_parts[OP_SL_POS]),
-                             (int)StringToInteger(msg_parts[OP_TP_POS]),
-                             BUY_OP);
-            } else Print("Error - 5: Operation message without enough parameters.");
-         }
-            
-      } else Print("Error - 4: Error in the message received");
-   }
-
-   /* Restarting the timer */
-   EventSetMillisecondTimer(MILLISECONDS_TIMEOUT);   
 }
