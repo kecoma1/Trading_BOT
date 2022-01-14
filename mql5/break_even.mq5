@@ -11,7 +11,8 @@ double SIGNAL[];
 CTrade trade;
 ulong trade_ticket = 0;
 bool time_passed = true;
-double open_trade_price = 0;
+double open_price = 0;
+
 
 //  500€ -> 0.02
 // 1000€ -> 0.05
@@ -39,29 +40,22 @@ void OnTick() {
    CopyBuffer(MACD_h, 1, 1, 4, SIGNAL);
    
    /* Checking if there's an open operation */
-   if (PositionSelectByTicket(trade_ticket) == false && trade_ticket != 0) { // No operations
+   if (PositionSelectByTicket(trade_ticket) == false && trade_ticket != 0) {
       // Reseting the trade flags
       trade_ticket = 0;
+      open_price = 0;
    } 
-   /*  TRAILING STOP  */
-   else if (trade_ticket != 0) { // Open operation
-      ENUM_POSITION_TYPE type = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+   
+   /*  BREAK EVEN  */
+   else if (trade_ticket != 0 && open_price != 0) {
+      double profit = PositionGetDouble(POSITION_PROFIT);
       
-      double cur_price = PositionGetDouble(POSITION_PRICE_CURRENT);
-      double new_sl = 0;
-      
-      if (type == POSITION_TYPE_BUY && cur_price > open_trade_price+20*_Point) {
-         new_sl = cur_price-20*_Point;
-           
-         trade.PositionModify(trade_ticket, new_sl, 0);
-      } else if (type == POSITION_TYPE_SELL && cur_price < open_trade_price-20*_Point){
-         new_sl = cur_price+20*_Point;
-           
-         trade.PositionModify(trade_ticket, new_sl, 0);
+      if (profit >= 0.5) {
+         trade.PositionModify(trade_ticket, open_price, 0);
+         open_price = 0;
       }
-      open_trade_price = new_sl ? new_sl : open_trade_price;
    }
-   /*  TRAILING STOP  */
+   /*  BREAK EVEN  */
    
    
    if ( // Buy
@@ -70,7 +64,7 @@ void OnTick() {
       ) {
       /* Precio actual */
       double Ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK), _Digits);
-      open_trade_price = Ask;
+      open_price = Ask;
       
       //--- Abrir compra
       double lotage = get_lotage();
@@ -87,8 +81,8 @@ void OnTick() {
    ) {
       /* Precio actual */
       double Bid = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_BID), _Digits);
-      open_trade_price = Bid;
-
+      open_price = Bid;
+      
       //--- Abrir venta
       double lotage = get_lotage();      
       trade.Sell(lotage, _Symbol, Bid, Bid+100*_Point, 0, NULL);
