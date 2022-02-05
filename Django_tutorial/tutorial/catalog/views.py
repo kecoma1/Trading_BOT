@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from .models import Actor, Film
 from django.views import generic
 
@@ -33,6 +32,7 @@ class ActorDetailView(generic.DetailView):
 class FilmDetailView(generic.DetailView):
 	model = Film
 
+@login_required
 def post_score(request, slug):
 	score = request.POST.get("score")
 	film = Film.objects.filter(slug=slug)[0]
