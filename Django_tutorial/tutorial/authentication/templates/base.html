@@ -10,6 +10,9 @@
 	</head>
 
 	<body>
+		{% if user.is_authenticated %}
+			<h1>Hello <strong>{{user.username}}</strong></h1>
+		{% endif %}
 		<div>{% block content %}{% endblock %}</div>
 	</body>
 
