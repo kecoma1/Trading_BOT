@@ -1,0 +1,8 @@
+1. Install Metatrader 5
+2. Allow algorithmic trading
+    2.1. Go to "Tools"
+    2.2. Click on "Allow algorithmic trading"
+3. Install metatrader 5 python - pip install MetaTrader5
+4. Install python extension in VSCode
+5. Add url in MT5 "localhost"
+5. Code and test!
