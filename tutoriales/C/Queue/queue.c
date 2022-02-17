@@ -2,63 +2,59 @@
 
 
 struct _queue {
-    int *items;
-    short num_items;
+	int *items;
+	short num_items;
 };
 
+
 Queue *queue_ini() {
-    Queue *q = NULL;
+	Queue *q = NULL;
 
-    q = (Queue*)malloc(sizeof(Queue));
-    if (q == NULL) return NULL;
+	q = (Queue *)malloc(sizeof(Queue));
+	if (q == NULL) return NULL;
 
-    q->items = NULL;
-    q->num_items = 0;
+	q->items = NULL;
+	q->num_items = 0;
 }
 
 void push(Queue *q, int value) {
-    q->items = realloc(q->items, (q->num_items+1)*sizeof(int));
-    
-    if (q->items == NULL) return;
+	q->items = realloc(q->items, (q->num_items+1)*sizeof(int));
+	if (q == NULL) return;
 
-    // At the end
-    q->items[q->num_items] = value;
+	q->items[q->num_items] = value;
 
-    q->num_items++;
+	q->num_items++;
 }
 
 int pop(Queue *q) {
-    if (q->num_items == 0) return -1;
+	if (q->num_items == 0) return -1;
 
-    int first = q->items[0];
+	int first = q->items[0];
 
-    if (q->num_items-1 > 0) {
+	if (q->num_items-1 > 0) {
+		for(int i = 0; i+1 < q->num_items; i++)
+			q->items[i] = q->items[i+1];
 
-        // Moving the elements
-        for (int i = 0; i+1 < q->num_items; i++)
-            q->items[i] = q->items[i+1];
+		q->items = realloc(q->items, (q->num_items-1)*sizeof(int));
+		if (q == NULL) return -1;
 
-        // Reallocating the memory
-        q->items = realloc(q->items, (q->num_items-1)*sizeof(int));
-        if (q->items == NULL) return -1;
+	} else {
+		free(q->items);
+		q->items = NULL;
+	}
 
-    } else {
-        free(q->items);
-        q->items = NULL;
-    } 
+	q->num_items--;
 
-    q->num_items--;
-
-    return first;
+	return first;
 }
 
 void queue_destroy(Queue *q) {
-    free(q->items);
-    free(q);
+	if (q->items != NULL) free(q->items);
+	free(q);
 }
 
 void queue_print(Queue *q) {
-    for (int i = 0; i < q->num_items; i++)
-        printf("%d ", q->items[i]);
-    printf("\n");
+	for (int i = 0; i < q->num_items; i++)
+		printf("%d ", q->items[i]);
+	printf("\n");
 }
