@@ -50,15 +50,19 @@ void OnTick() {
       double cur_price = PositionGetDouble(POSITION_PRICE_CURRENT);
       double new_sl = 0;
       
-      if (type == POSITION_TYPE_BUY && cur_price > open_trade_price+20*_Point) {
-         new_sl = cur_price-20*_Point;
-           
+      if (type == POSITION_TYPE_BUY && cur_price > open_trade_price+20000*_Point) {
+         new_sl = NormalizeDouble(cur_price-20000*_Point, _Digits);
          trade.PositionModify(trade_ticket, new_sl, 0);
-      } else if (type == POSITION_TYPE_SELL && cur_price < open_trade_price-20*_Point){
-         new_sl = cur_price+20*_Point;
-           
-         trade.PositionModify(trade_ticket, new_sl, 0);
+         // open_trade_price = new_sl
       }
+      else if (type == POSITION_TYPE_SELL && cur_price < open_trade_price-20000*_Point) {
+         new_sl = NormalizeDouble(cur_price+20000*_Point, _Digits);
+         trade.PositionModify(trade_ticket, new_sl, 0);
+         // open_trade_price = new_sl
+      }
+
+      // Si no se cambia el stop loss (es igual a 0) el open_trade_price se mantiene
+      // Esto se podría implementar de otra forma, en concreto como muestro en las líneas 61 y 56
       open_trade_price = new_sl ? new_sl : open_trade_price;
    }
    /*  TRAILING STOP  */
@@ -74,7 +78,7 @@ void OnTick() {
       
       //--- Abrir compra
       double lotage = get_lotage();
-      trade.Buy(lotage, _Symbol, Ask, Ask-100*_Point, 0, NULL);
+      trade.Buy(lotage, _Symbol, Ask, Ask-6000*_Point, 0, NULL);
       trade_ticket = trade.ResultOrder();
 
       time_passed = false;
@@ -91,7 +95,7 @@ void OnTick() {
 
       //--- Abrir venta
       double lotage = get_lotage();      
-      trade.Sell(lotage, _Symbol, Bid, Bid+100*_Point, 0, NULL);
+      trade.Sell(lotage, _Symbol, Bid, Bid+6000*_Point, 0, NULL);
       trade_ticket = trade.ResultOrder();
       
       time_passed = false;
