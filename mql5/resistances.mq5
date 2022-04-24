@@ -1,7 +1,7 @@
 #define SIZE 800
 #define MARGIN 20
 #define MARGIN_POINTS 500000*_Point
-#define REQ_LOWS_FOR_RESISTANCE 1
+#define REQ_LOWS_FOR_SUPPORT 1
 
 MqlRates candles[];
 
@@ -28,7 +28,7 @@ void findMins() {
    }
 }
 
-bool resistance_drawn(double value, double& lines_drawn[]) {
+bool support_drawn(double value, double& lines_drawn[]) {
    int size = ArraySize(lines_drawn);
    
    if (size == 0) return false;
@@ -40,7 +40,7 @@ bool resistance_drawn(double value, double& lines_drawn[]) {
    return false;
 }
 
-void draw_low_resistances() {
+void draw_supports() {
 
    findMins();
    
@@ -56,11 +56,11 @@ void draw_low_resistances() {
                && lows[i] - MARGIN_POINTS < lows[n]) lows_in++;
       }
       
-      if (lows_in >= REQ_LOWS_FOR_RESISTANCE) {
-         if (!resistance_drawn(candles[i].close, val_lines_drawn)) {
-            ObjectCreate(0, "line"+IntegerToString(ArraySize(val_lines_drawn)), OBJ_HLINE, 0, 0, candles[i].close);
-            ObjectSetInteger(0, "line"+IntegerToString(ArraySize(val_lines_drawn)), OBJPROP_COLOR, clrRed);
-            ObjectSetInteger(0, "line"+IntegerToString(ArraySize(val_lines_drawn)), OBJPROP_WIDTH, 4);
+      if (lows_in >= REQ_LOWS_FOR_SUPPORT) {
+         if (!support_drawn(candles[i].close, val_lines_drawn)) {
+            ObjectCreate(0, "support"+IntegerToString(ArraySize(val_lines_drawn)), OBJ_HLINE, 0, 0, candles[i].close);
+            ObjectSetInteger(0, "support"+IntegerToString(ArraySize(val_lines_drawn)), OBJPROP_COLOR, clrRed);
+            ObjectSetInteger(0, "support"+IntegerToString(ArraySize(val_lines_drawn)), OBJPROP_WIDTH, 4);
             
             int size = ArraySize(val_lines_drawn);
             ArrayResize(val_lines_drawn, size+1);
@@ -76,6 +76,6 @@ void OnInit() {
    
    CopyRates(_Symbol, _Period, 0, SIZE, candles);
    
-   draw_low_resistances();
+   draw_supports();
    
 }
