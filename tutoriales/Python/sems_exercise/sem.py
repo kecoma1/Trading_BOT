@@ -7,7 +7,6 @@ NUM_KIDS = 10
 AVAILABLE_PIECES = 3
 
 mutex = threading.Semaphore(1)
-start = threading.Semaphore(0)
 
 
 def call_mum_for_cakes():
@@ -20,14 +19,14 @@ def call_mum_for_cakes():
 def kid(n):
     global AVAILABLE_PIECES
 
-    start.acquire()
+    sleep(randint(1, 9))
 
     for _ in range(randint(1, 4)):
         # Go to the queue
-        # mutex.acquire()
+        mutex.acquire()
 
         # If there are no pieces every one waits until there's a new cake
-        if AVAILABLE_PIECES == 0:
+        if AVAILABLE_PIECES <= 0:
             call_mum_for_cakes()
 
         # Since we are taking a piece we must delete one
@@ -38,7 +37,7 @@ def kid(n):
         sleep(randint(1, 3))
 
         # Kid got his food
-        # mutex.release()
+        mutex.release()
 
         # Kid N is going to eat
         print("I'm the kid", n, "and I'm eating")
@@ -49,9 +48,6 @@ threads = []
 for i in range(NUM_KIDS):
     threads.append(threading.Thread(target=kid, args=(i+1,)))
     threads[-1].start()
-
-for i in range(NUM_KIDS):
-    start.release()
 
 for t in threads:
     t.join()
