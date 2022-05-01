@@ -1,4 +1,3 @@
-from ssl import ALERT_DESCRIPTION_BAD_CERTIFICATE_HASH_VALUE
 import threading
 from random import randint
 from time import sleep
