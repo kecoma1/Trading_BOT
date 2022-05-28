@@ -24,7 +24,7 @@ bool is_rsi_above_top() { return rsi[0] > TOP_RSI_LEVEL; }
 void trailing_stop(ulong ticket) {
    double open = PositionGetDouble(POSITION_PRICE_OPEN);
    double cur_sl = PositionGetDouble(POSITION_SL);
-   double cur_price = candles[0].close;
+   double cur_price = candles[0].close; // OR: double cur_price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
    
    if (cur_sl - SL_MARGIN > cur_price)
       trade.PositionModify(ticket, cur_price+SL_MARGIN, 0);
