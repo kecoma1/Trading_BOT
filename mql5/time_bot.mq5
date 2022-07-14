@@ -25,7 +25,7 @@ void OnInit() {
    // Computing the seconds left until the time established
    // Calculando los segundos que quedan hasta la hora establecida
    int hours_left = time.hour <= HOUR ? HOUR - time.hour : 24 - (time.hour - HOUR);
-   int minutes_left = time.min <= MINUTE ? MINUTE - time.min : 24 - (time.min - MINUTE);
+   int minutes_left = time.min <= MINUTE ? MINUTE - time.min : 60 - (time.min - MINUTE);
    
    int seconds_left = hours_left*60*60 + minutes_left*60;
    
