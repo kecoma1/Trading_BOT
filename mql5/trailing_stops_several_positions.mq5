@@ -30,6 +30,7 @@ void trailing_stop_all() {
    for(int i = 0; i < PositionsTotal(); i++) {
       ulong ticket = PositionGetTicket(i);
       PositionGetSymbol(i);
+	   PositionSelectByTicket(ticket);
       
       trailing_stop(ticket);
    }
