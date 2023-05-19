@@ -15,7 +15,7 @@ bool buy_cross() {
 }
 
 bool sell_cross() {
-   return ema_slow[1] > ema_fast[1] && ema_slow[0] < ema_fast[0];
+   return ema_slow[1] < ema_fast[1] && ema_slow[0] > ema_fast[0];
 }
 
 int bars;
