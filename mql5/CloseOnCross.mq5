@@ -50,6 +50,11 @@ int OnInit() {
    return INIT_SUCCEEDED;
 }
 
+void OnDeinit(const int reason) {
+   if (ema_fast_h != INVALID_HANDLE) IndicatorRelease(ema_fast_h);
+   if (ema_slow_h != INVALID_HANDLE) IndicatorRelease(ema_slow_h);
+}
+
 void OnTick() {
    CopyBuffer(ema_fast_h, 0, 1, 2, ema_fast);
    CopyBuffer(ema_slow_h, 0, 1, 2, ema_slow);
